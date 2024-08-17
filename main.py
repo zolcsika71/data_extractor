@@ -1,16 +1,35 @@
-# This is a sample Python script.
+# Import the necessary modules from extractor and utils
+from extractor.pdf_extractor import extract_classes_from_pdf
+from extractor.notebook_extractor import extract_classes_from_notebook
+from utils.file_utils import save_to_file
+from utils.text_formatter import format_classes
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# Main function to orchestrate the extraction process
+def main():
+    # Define input files (PDFs and Jupyter Notebooks)
+    pdf_files = ["data/pdf/PortfolioPython.pdf", "data/pdf/AdvPortfolioPython.pdf"]
+    notebook_files = ["data/notebook/PortfolioPython.ipynb", "data/notebook/AdvPortfolioPython.ipynb"]
 
+    # Extract classes from PDF files
+    pdf_classes = []
+    for pdf_file in pdf_files:
+        pdf_classes.extend(extract_classes_from_pdf(pdf_file))
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+    # Extract classes from Jupyter Notebook files
+    notebook_classes = []
+    for notebook_file in notebook_files:
+        notebook_classes.extend(extract_classes_from_notebook(notebook_file))
 
+    # Combine extracted classes from all sources
+    all_classes = pdf_classes + notebook_classes
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    # Optionally format the extracted classes before saving
+    formatted_classes = format_classes(all_classes)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Save the formatted classes to a text file
+    save_to_file(formatted_classes, "output/extracted_classes.txt")
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+
